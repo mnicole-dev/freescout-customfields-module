@@ -1,0 +1,19 @@
+{
+  "name": "CustomFields",
+  "alias": "customfields",
+  "description": "Admin-defined custom fields stored per conversation, shown and edited in the sidebar.",
+  "version": "1.0.0",
+  "detailsUrl": "https://github.com/mnicole-dev/freescout-customfields-module",
+  "author": "KodeSaaS",
+  "authorUrl": "https://kodesaas.com",
+  "requiredAppVersion": "1.8.0",
+  "license": "AGPL-3.0",
+  "keywords": [],
+  "active": 0,
+  "order": 0,
+  "img": "",
+  "providers": ["Modules\\CustomFields\\Providers\\CustomFieldsServiceProvider"],
+  "aliases": {},
+  "files": ["start.php"],
+  "requires": []
+}
