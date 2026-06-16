@@ -1,0 +1,22 @@
+<?php
+
+return [
+    'Custom Fields' => 'Custom Fields',
+    'New Custom Field' => 'New Custom Field',
+    'Edit Custom Field' => 'Edit Custom Field',
+    'No custom fields yet.' => 'No custom fields yet.',
+    'One option per line' => 'One option per line',
+    'Used by Dropdown and Multiselect. One option per line.' => 'Used by Dropdown and Multiselect. One option per line.',
+    'Delete this field and all its values?' => 'Delete this field and all its values?',
+    'Custom field created.' => 'Custom field created.',
+    'Custom field updated.' => 'Custom field updated.',
+    'Custom field deleted.' => 'Custom field deleted.',
+    'Custom fields saved.' => 'Custom fields saved.',
+    'dropdown' => 'Dropdown',
+    'multiselect' => 'Multiselect',
+    'singleline' => 'Single line',
+    'multiline' => 'Multi line',
+    'tags' => 'Tags',
+    'number' => 'Number',
+    'date' => 'Date',
+];
