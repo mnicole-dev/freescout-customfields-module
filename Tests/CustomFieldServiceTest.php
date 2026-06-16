@@ -51,4 +51,25 @@ class CustomFieldServiceTest extends TestCase
         $this->assertTrue(CustomFieldService::isMultiValue('tags'));
         $this->assertFalse(CustomFieldService::isMultiValue('dropdown'));
     }
+
+    public function test_applies_to_mailbox_when_all_flag_is_set(): void
+    {
+        $this->assertTrue(CustomFieldService::appliesToMailbox(true, 5, []));
+        $this->assertTrue(CustomFieldService::appliesToMailbox(true, 5, [1, 2]));
+    }
+
+    public function test_applies_to_mailbox_checks_assigned_list_when_not_all(): void
+    {
+        $this->assertTrue(CustomFieldService::appliesToMailbox(false, 5, [3, 5, 9]));
+        $this->assertTrue(CustomFieldService::appliesToMailbox(false, 5, ['5']));
+        $this->assertFalse(CustomFieldService::appliesToMailbox(false, 5, [1, 2]));
+        $this->assertFalse(CustomFieldService::appliesToMailbox(false, 5, []));
+    }
+
+    public function test_normalize_mailbox_selection(): void
+    {
+        $this->assertSame([], CustomFieldService::normalizeMailboxSelection(true, [1, 2]));
+        $this->assertSame([1, 2], CustomFieldService::normalizeMailboxSelection(false, ['1', '2', '2', '']));
+        $this->assertSame([], CustomFieldService::normalizeMailboxSelection(false, 'nope'));
+    }
 }

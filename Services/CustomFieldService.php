@@ -78,4 +78,23 @@ class CustomFieldService
         }
         return $out;
     }
+
+    /** A field applies to a mailbox if it targets all mailboxes, or the mailbox is in its assigned list. */
+    public static function appliesToMailbox(bool $allMailboxes, int $mailboxId, array $assignedMailboxIds): bool
+    {
+        if ($allMailboxes) {
+            return true;
+        }
+        return in_array($mailboxId, array_map('intval', $assignedMailboxIds), true);
+    }
+
+    /** Form selection → mailbox ids to sync into the pivot ([] when "all mailboxes"). */
+    public static function normalizeMailboxSelection(bool $allMailboxes, $mailboxIds): array
+    {
+        if ($allMailboxes || !is_array($mailboxIds)) {
+            return [];
+        }
+        $ids = array_map('intval', array_filter($mailboxIds, fn ($v) => $v !== '' && $v !== null));
+        return array_values(array_unique($ids));
+    }
 }
