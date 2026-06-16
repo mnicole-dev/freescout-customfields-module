@@ -22,7 +22,12 @@ class ConversationFieldsController extends Controller
         $this->authorize('viewCached', $conversation);
 
         $input = (array) $request->input('cf', []); // cf[<field_id>] = value
-        foreach (CustomField::all() as $field) {
+        foreach (CustomField::with('mailboxes')->get() as $field) {
+            // N'écrire que les champs applicables à la boîte de la conversation
+            // (cohérent avec le rendu sidebar ; bloque un POST forgé sur un champ non ciblé).
+            if (!CustomFieldService::appliesToMailbox((bool) $field->all_mailboxes, (int) $conversation->mailbox_id, $field->mailboxes->pluck('id')->all())) {
+                continue;
+            }
             $raw = $input[$field->id] ?? null;
             $value = CustomFieldService::serialize($field->type, $raw);
             if ($value === null) {
