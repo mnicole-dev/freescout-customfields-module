@@ -40,7 +40,14 @@ class CustomFieldsServiceProvider extends ServiceProvider
 
         // Bloc éditable dans la sidebar de conversation.
         \Eventy::addAction('conversation.after_subject', function ($conversation, $mailbox) {
-            $fields = CustomField::orderBy('sort_order')->orderBy('id')->get();
+            $fields = CustomField::with('mailboxes')->orderBy('sort_order')->orderBy('id')->get()
+                ->filter(function ($field) use ($conversation) {
+                    return \Modules\CustomFields\Services\CustomFieldService::appliesToMailbox(
+                        (bool) $field->all_mailboxes,
+                        (int) $conversation->mailbox_id,
+                        $field->mailboxes->pluck('id')->all()
+                    );
+                });
             if (!$fields->count()) {
                 return;
             }

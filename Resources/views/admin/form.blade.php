@@ -28,6 +28,22 @@
             <p class="form-help">{{ __('Used by Dropdown and Multiselect. One option per line.') }}</p>
         </div>
     </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">{{ __('Mailboxes') }}</label>
+        <div class="col-sm-6">
+            <label class="checkbox-inline">
+                <input type="checkbox" name="all_mailboxes" id="cf-all-mailboxes" value="1" @if ($field->all_mailboxes) checked @endif> {{ __('All mailboxes') }}
+            </label>
+            <div id="cf-mailboxes-group" class="margin-top-10">
+                <select name="mailbox_ids[]" class="form-control" multiple size="6">
+                    @foreach ($mailboxes as $mb)
+                        <option value="{{ $mb->id }}" @if (in_array($mb->id, $selected)) selected @endif>{{ $mb->name }}</option>
+                    @endforeach
+                </select>
+                <p class="form-help">{{ __('Hold Ctrl/Cmd to select several mailboxes.') }}</p>
+            </div>
+        </div>
+    </div>
     <div class="form-group"><div class="col-sm-6 col-sm-offset-2">
         <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
         <a href="{{ route('customfields.index') }}" class="btn btn-link">{{ __('Cancel') }}</a>
@@ -40,8 +56,14 @@
         var t = document.getElementById('cf-type').value;
         document.getElementById('cf-options-group').style.display = (t === 'dropdown' || t === 'multiselect') ? '' : 'none';
     }
+    function toggleMailboxes() {
+        var all = document.getElementById('cf-all-mailboxes').checked;
+        document.getElementById('cf-mailboxes-group').style.display = all ? 'none' : '';
+    }
     document.getElementById('cf-type').addEventListener('change', toggleOptions);
+    document.getElementById('cf-all-mailboxes').addEventListener('change', toggleMailboxes);
     toggleOptions();
+    toggleMailboxes();
 })();
 </script>
 @endsection

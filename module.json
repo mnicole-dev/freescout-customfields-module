@@ -2,7 +2,7 @@
   "name": "CustomFields",
   "alias": "customfields",
   "description": "Admin-defined custom fields stored per conversation, shown and edited in the sidebar.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "detailsUrl": "https://github.com/mnicole-dev/freescout-customfields-module",
   "author": "KodeSaaS",
   "authorUrl": "https://kodesaas.com",
