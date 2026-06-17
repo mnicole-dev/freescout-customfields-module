@@ -35,12 +35,13 @@
                 <input type="checkbox" name="all_mailboxes" id="cf-all-mailboxes" value="1" @if ($field->all_mailboxes) checked @endif> {{ __('All mailboxes') }}
             </label>
             <div id="cf-mailboxes-group" class="margin-top-10">
-                <select name="mailbox_ids[]" class="form-control" multiple size="6">
-                    @foreach ($mailboxes as $mb)
-                        <option value="{{ $mb->id }}" @if (in_array($mb->id, $selected)) selected @endif>{{ $mb->name }}</option>
-                    @endforeach
-                </select>
-                <p class="form-help">{{ __('Hold Ctrl/Cmd to select several mailboxes.') }}</p>
+                @foreach ($mailboxes as $mb)
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="mailbox_ids[]" value="{{ $mb->id }}" @if (in_array($mb->id, $selected)) checked @endif> {{ $mb->name }}
+                        </label>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
