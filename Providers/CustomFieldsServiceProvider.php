@@ -5,6 +5,7 @@ namespace Modules\CustomFields\Providers;
 use Illuminate\Support\ServiceProvider;
 use Modules\CustomFields\Entities\ConversationCustomField;
 use Modules\CustomFields\Entities\CustomField;
+use Modules\CustomFields\Services\CustomFieldService;
 
 class CustomFieldsServiceProvider extends ServiceProvider
 {
@@ -37,6 +38,23 @@ class CustomFieldsServiceProvider extends ServiceProvider
                 echo '<li><a href="' . route('customfields.index') . '">' . __('Custom Fields') . '</a></li>';
             }
         });
+
+        // Make values searchable. The core hands us the OR group of its search query;
+        // we add a subquery on the pivot. Mailbox scoping is applied outside this group,
+        // so a user still only ever matches conversations they can view.
+        \Eventy::addFilter('search.conversations.or_where', function ($query, $filters, $q) {
+            if (!is_string($q) || trim($q) === '') {
+                return $query;
+            }
+            $operator = CustomFieldService::searchLikeOperator(\Helper::isPgSql());
+            $pattern  = CustomFieldService::searchLikePattern($q);
+
+            return $query->orWhereIn('conversations.id', function ($sub) use ($operator, $pattern) {
+                $sub->select('conversation_id')
+                    ->from('conversation_custom_field')
+                    ->where('value', $operator, $pattern);
+            });
+        }, 20, 3);
 
         // Bloc éditable dans la sidebar de conversation.
         \Eventy::addAction('conversation.after_subject', function ($conversation, $mailbox) {

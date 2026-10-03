@@ -72,4 +72,17 @@ class CustomFieldServiceTest extends TestCase
         $this->assertSame([1, 2], CustomFieldService::normalizeMailboxSelection(false, ['1', '2', '2', '']));
         $this->assertSame([], CustomFieldService::normalizeMailboxSelection(false, 'nope'));
     }
+
+    public function test_search_pattern_is_lowercased_and_wrapped(): void
+    {
+        $this->assertSame('%ltm-4471%', CustomFieldService::searchLikePattern('LTM-4471'));
+        $this->assertSame('%ltm-4471%', CustomFieldService::searchLikePattern('  LTM-4471  '));
+        $this->assertSame('%%', CustomFieldService::searchLikePattern(''));
+    }
+
+    public function test_search_operator_follows_driver(): void
+    {
+        $this->assertSame('like', CustomFieldService::searchLikeOperator(false));
+        $this->assertSame('ilike', CustomFieldService::searchLikeOperator(true));
+    }
 }

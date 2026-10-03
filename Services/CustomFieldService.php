@@ -88,6 +88,18 @@ class CustomFieldService
         return in_array($mailboxId, array_map('intval', $assignedMailboxIds), true);
     }
 
+    /** Search pattern for a value lookup. Lowercased like the core does, wildcards left unescaped to match its behaviour. */
+    public static function searchLikePattern(string $q): string
+    {
+        return '%' . mb_strtolower(trim($q)) . '%';
+    }
+
+    /** MySQL LIKE is case-insensitive by collation, PostgreSQL needs ILIKE. Mirrors Conversation::search(). */
+    public static function searchLikeOperator(bool $isPgSql): string
+    {
+        return $isPgSql ? 'ilike' : 'like';
+    }
+
     /** Form selection → mailbox ids to sync into the pivot ([] when "all mailboxes"). */
     public static function normalizeMailboxSelection(bool $allMailboxes, $mailboxIds): array
     {

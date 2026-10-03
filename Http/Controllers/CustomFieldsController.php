@@ -73,13 +73,13 @@ class CustomFieldsController extends Controller
             'type'          => $request->type,
             'options'       => in_array($request->type, ['dropdown', 'multiselect'], true) ? $request->options : null,
             'sort_order'    => (int) ($request->sort_order ?? 0),
-            'all_mailboxes' => $request->boolean('all_mailboxes'),
+            'all_mailboxes' => filter_var($request->input('all_mailboxes'), FILTER_VALIDATE_BOOLEAN),
         ];
     }
 
     private function mailboxIds(Request $request): array
     {
-        return CustomFieldService::normalizeMailboxSelection($request->boolean('all_mailboxes'), $request->input('mailbox_ids'));
+        return CustomFieldService::normalizeMailboxSelection(filter_var($request->input('all_mailboxes'), FILTER_VALIDATE_BOOLEAN), $request->input('mailbox_ids'));
     }
 
     private function validateField(Request $request)

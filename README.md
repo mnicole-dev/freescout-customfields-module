@@ -24,7 +24,7 @@ Activate **CustomFields** in **Manage → Modules**. The migrations create the t
 > If installing via CLI in a container, run `artisan` as the web user, not root.
 
 ## Scope
-V1 = display + edit. Required fields and search filtering are planned for V2. Deactivating the module
+V1 = display + edit. Values are searchable from the global search box. Required fields are planned for V2. Deactivating the module
 keeps your data (tables are not dropped).
 
 ## License
