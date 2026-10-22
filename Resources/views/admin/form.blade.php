@@ -51,7 +51,10 @@
     </div></div>
 </form>
 </div></div></div>
-<script>
+{{-- FreeScout serves a CSP whose script-src is "'self' 'nonce-…'" with no
+     'unsafe-inline'. Without the nonce the browser drops this script and the
+     type-dependent fields never toggle. --}}
+<script type="text/javascript" {!! \Helper::cspNonceAttr() !!}>
 (function () {
     function toggleOptions() {
         var t = document.getElementById('cf-type').value;
