@@ -32,6 +32,10 @@ Three details are worth knowing before touching this:
 - **`where('mailbox_id', …)` is translated, not supported.** The paid module has that column; we use
   an "all mailboxes" flag plus a pivot, so `CustomFieldCompatBuilder` rewrites that one filter.
 
+One shape to be aware of: for the multi-value types (`multiselect`, `tags`) the API returns `value`
+as the stored JSON string (`["blue","green"]`). The paid module has no multi-value type, so there is
+no official shape to match; this one round-trips through `setValue` without loss.
+
 The API exposes our own type vocabulary (`dropdown`, `singleline`, …) because the labels in
 `CustomFieldService::API_TYPE_LABELS` are chosen to survive the transformation API & Webhooks
 applies to them. `Tests/ApiCompatContractTest.php` locks that down.
