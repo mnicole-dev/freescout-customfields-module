@@ -7,6 +7,21 @@ class CustomFieldService
     const TYPES = ['dropdown', 'multiselect', 'singleline', 'multiline', 'tags', 'number', 'date'];
     const MULTI_TYPES = ['multiselect', 'tags'];
 
+    /**
+     * Libellés attendus par le module officiel « Custom Fields », dont API & Webhooks
+     * dérive le nom de type exposé par l'API : espaces retirés, passage en minuscules.
+     * Ils sont choisis pour retomber exactement sur nos propres types.
+     */
+    const API_TYPE_LABELS = [
+        'dropdown'    => 'Drop Down',
+        'multiselect' => 'Multi Select',
+        'singleline'  => 'Single Line',
+        'multiline'   => 'Multi Line',
+        'tags'        => 'Tags',
+        'number'      => 'Number',
+        'date'        => 'Date',
+    ];
+
     public static function isMultiValue(string $type): bool
     {
         return in_array($type, self::MULTI_TYPES, true);
@@ -77,6 +92,14 @@ class CustomFieldService
             }
         }
         return $out;
+    }
+
+    /** Options d'une définition (texte libre) → table valeur => libellé, forme attendue par l'API officielle. */
+    public static function optionsMap(?string $raw): array
+    {
+        $options = self::parseOptions($raw);
+
+        return $options ? array_combine($options, $options) : [];
     }
 
     /** A field applies to a mailbox if it targets all mailboxes, or the mailbox is in its assigned list. */
